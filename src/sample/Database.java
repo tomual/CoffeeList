@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -14,6 +15,12 @@ public class Database {
     private static String database;
     private static String dbuser;
     private static String dbpassword;
+
+    public Database() {
+        loadConfig();
+        connect();
+    }
+
     public static void loadConfig() {
         Properties prop = new Properties();
         InputStream input = null;
@@ -37,7 +44,7 @@ public class Database {
         }
     }
 
-    public Connection getConnection() {
+    public Connection connect() {
         loadConfig();
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -49,5 +56,23 @@ public class Database {
             e.printStackTrace();
         }
         return connection;
+    }
+
+    public boolean createUser(String username, String email, String password) {
+        MyHash hash = new MyHash(password);
+        String query = "INSERT INTO users (username, email, password, salt) values (?, ?, ?, ?)";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, email);
+            preparedStatement.setString(3, hash.getHash());
+            preparedStatement.setString(4, hash.getSalt());
+            preparedStatement.execute();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

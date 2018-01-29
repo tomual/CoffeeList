@@ -41,7 +41,34 @@ public class Signup {
 
     @FXML
     void signupButtonClick(ActionEvent event) {
+        String username = usernameInput.getText().trim();
+        String email = emailInput.getText().trim();
+        String password = passwordInput.getText().trim();
+        String confirmPassword = confirmPasswordInput.getText().trim();
+        if(validate(username, email, password, confirmPassword).isEmpty()) {
+            signup(username, email, password);
+        }
+    }
 
+    private void signup(String username, String email, String password) {
+        Database database = new Database();
+        database.createUser(username, email, password);
+    }
+
+    private String validate(String username, String email, String password, String confirmPassword) {
+        if (username.isEmpty()) {
+            return "Please enter username";
+        }
+        if (email.isEmpty()) {
+            return "Please enter email";
+        }
+        if(password.isEmpty()) {
+            return "Please enter a password";
+        }
+        if(!password.equals(confirmPassword)) {
+            return "Passwords do not match";
+        }
+        return "";
     }
 
     @FXML

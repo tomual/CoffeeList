@@ -1,12 +1,11 @@
 package sample;
 
+import com.mysql.jdbc.Statement;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class Database {
@@ -58,21 +57,51 @@ public class Database {
         return connection;
     }
 
-    public boolean createUser(String username, String email, String password) {
+    public int createUser(String username, String email, String password) {
         MyHash hash = new MyHash(password);
         String query = "INSERT INTO users (username, email, password, salt) values (?, ?, ?, ?)";
         PreparedStatement preparedStatement = null;
         try {
-            preparedStatement = connection.prepareStatement(query);
+            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, email);
             preparedStatement.setString(3, hash.getHash());
             preparedStatement.setString(4, hash.getSalt());
-            preparedStatement.execute();
-            return true;
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed");
+            }
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+                else {
+                    throw new SQLException("Creating user failed");
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return 0;
         }
+    }
+
+    public ResultSet getUser(String username) {
+        String query = "SELECT * FROM users WHERE username = ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet;
+            }
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

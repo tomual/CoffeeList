@@ -11,6 +11,10 @@ public class MyHash {
     private String hash;
     private String salt;
 
+    public MyHash() {
+
+    }
+
     public MyHash(String password) {
         String salt = null;
         try {
@@ -30,8 +34,13 @@ public class MyHash {
         return salt;
     }
 
-    private boolean check(String password, String hash, String salt) throws Exception {
-        String calculatedHash = getEncryptedPassword(password, salt);
+    public boolean check(String password, String hash, String salt) {
+        String calculatedHash = null;
+        try {
+            calculatedHash = getEncryptedPassword(password, salt);
+        } catch (Exception e) {
+            System.err.println("Failed to get hash");
+        }
         if (calculatedHash.equals(hash)) {
             return true;
         } else {

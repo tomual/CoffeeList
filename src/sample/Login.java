@@ -6,6 +6,8 @@ import com.jfoenix.controls.JFXTextField;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,7 +62,21 @@ public class Login {
     }
 
     private void login(String username, String password) {
-        System.out.println("Login with " + username + ":" + password);
+        String hash = "";
+        String salt = "";
+        Database database = new Database();
+        ResultSet resultSet = database.getUser(username);
+        try {
+            hash = resultSet.getString("password");
+            salt = resultSet.getString("salt");
+            User user = new User(resultSet.getInt("userid"), resultSet.getString("username"), resultSet.getString("email"));
+        } catch (SQLException e) {
+            System.err.println("User not found: " + e.getMessage());
+        }
+        MyHash myHash = new MyHash();
+        if (myHash.check(password, hash, salt)) {
+        }
+
     }
 
     @FXML

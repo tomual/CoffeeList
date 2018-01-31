@@ -3,6 +3,7 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXPasswordField?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -48,5 +49,10 @@
             <Font size="18.0" />
          </font>
       </JFXPasswordField>
+      <Label fx:id="usernameError" layoutX="97.0" layoutY="206.0" text="Username is required" textFill="#b91400" visible="false" />
+      <Label fx:id="emailError" layoutX="97.0" layoutY="267.0" text="Email is required" textFill="#b91400" visible="false" />
+      <Label fx:id="passwordError" layoutX="97.0" layoutY="333.0" text="Password is required" textFill="#b91400" visible="false" />
+      <Label fx:id="confirmPasswordError" layoutX="97.0" layoutY="400.0" text="Please confirm your password" textFill="#b91400" visible="false" />
+      <Label fx:id="signupError" layoutX="97.0" layoutY="138.0" text="Username is already taken" textFill="#b91400" visible="false" />
    </children>
 </AnchorPane>

@@ -1,6 +1,8 @@
 package sample;
 
 import com.mysql.jdbc.Statement;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -108,7 +110,6 @@ public class Database {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -127,6 +128,30 @@ public class Database {
                 return resultSet;
             }
             preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ObservableList<String> getTasks(int userId) {
+        ObservableList<String> observableList = FXCollections.observableArrayList();;
+        System.out.println("getTasks");
+        String query = "SELECT * FROM tasks WHERE userid = ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()) {
+                System.out.println("Adding: " + resultSet.getString("label"));
+                observableList.add(resultSet.getString("label"));
+            }
+            preparedStatement.close();
+            return observableList;
         } catch (SQLException e) {
             e.printStackTrace();
         }

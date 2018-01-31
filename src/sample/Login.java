@@ -51,7 +51,10 @@ public class Login {
     void loginButtonClick(ActionEvent event) {
         String username = usernameInput.getText().trim();
         String password = passwordInput.getText().trim();
-        login(username, password);
+
+        if (validate()) {
+            login(username, password);
+        }
     }
 
     @FXML
@@ -69,18 +72,20 @@ public class Login {
         Parent root = loader.getRoot();
         Stage stage = new Stage();
         stage.setScene(new Scene(root));
-        stage.showAndWait();
+        stage.show();
     }
 
     private void login(String username, String password) {
-        if (!validate(username, password)) {
-            return;
-        }
         User user = null;
         String hash = "";
         String salt = "";
         Database database = new Database();
         ResultSet resultSet = database.getUser(username);
+
+        if (resultSet == null) {
+            loginError.setVisible(true);
+            return;
+        }
 
         try {
             hash = resultSet.getString("password");
@@ -104,16 +109,14 @@ public class Login {
             Stage pageStage = new Stage();
             TaskList taskList = loader.getController();
             pageStage.setScene(scene);
-            taskList.initialize();
             taskList.setUser(user);
+            taskList.initialize();
             loginButton.getScene().getWindow().hide();
             pageStage.show();
-        } else {
-            loginError.setVisible(true);
         }
     }
 
-    private boolean validate(String username, String password) {
+    private boolean validate() {
 
         boolean valid = true;
         loginError.setVisible(false);
@@ -122,12 +125,12 @@ public class Login {
         usernameInput.setUnFocusColor(Paint.valueOf("#4d4d4d"));
         passwordInput.setUnFocusColor(Paint.valueOf("#4d4d4d"));
 
-        if(username.isEmpty()) {
+        if(usernameInput.getText().isEmpty()) {
             usernameError.setVisible(true);
             usernameInput.setUnFocusColor(Paint.valueOf("#b91400"));
             valid = false;
         }
-        if(password.isEmpty()) {
+        if(passwordInput.getText().isEmpty()) {
             passwordError.setVisible(true);
             passwordInput.setUnFocusColor(Paint.valueOf("#b91400"));
             valid = false;

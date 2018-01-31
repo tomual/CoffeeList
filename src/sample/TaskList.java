@@ -5,6 +5,8 @@ import com.jfoenix.controls.JFXListView;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -51,7 +53,11 @@ public class TaskList {
 
     @FXML
     void initialize() {
-        ObservableList<String> observableList = FXCollections.observableArrayList("Test thing", "Another Test thing", "Most Test thing");
+        ObservableList<String> observableList = FXCollections.observableArrayList();;
+        Database database = new Database();
+        if (user != null) {
+            observableList = database.getTasks(user.getUserId());
+        }
         listView.setItems(observableList);
         assert listView != null : "fx:id=\"listView\" was not injected: check your FXML file 'taskList.fxml'.";
         assert addButton != null : "fx:id=\"addButton\" was not injected: check your FXML file 'taskList.fxml'.";

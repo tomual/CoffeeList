@@ -1,13 +1,20 @@
 package sample;
 
+import java.util.Date;
+
 public class Task {
     private int taskid;
     private int userid;
     private String label;
     private String descripion;
-    private long created;
+    private Date created;
 
-    public Task() {
+    public Task(int taskid, int userid, String label, String description, Date created) {
+        this.taskid = taskid;
+        this.userid = userid;
+        this.label = label;
+        this.descripion = description;
+        this.created = created;
     }
 
     public int getTaskid() {
@@ -42,11 +49,11 @@ public class Task {
         this.descripion = descripion;
     }
 
-    public long getCreated() {
+    public Date getCreated() {
         return created;
     }
 
-    public void setCreated(long created) {
+    public void setCreated(Date created) {
         this.created = created;
     }
 }

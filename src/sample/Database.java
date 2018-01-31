@@ -57,7 +57,34 @@ public class Database {
         return connection;
     }
 
-    public int createUser(String username, String email, String password) {
+    public Task createTask(User user, String label, String description) {
+        String query = "INSERT INTO tasks (userid, label, description) values (?, ?, ?)";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, user.getUserId());
+            preparedStatement.setString(2, label);
+            preparedStatement.setString(3, description);
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Creating task failed");
+            }
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    Task task = new Task(generatedKeys.getInt(1), user.getUserId(), label, description, new java.util.Date());
+                    return task;
+                }
+                else {
+                    throw new SQLException("Creating task failed");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public User createUser(String username, String email, String password) {
         MyHash hash = new MyHash(password);
         String query = "INSERT INTO users (username, email, password, salt) values (?, ?, ?, ?)";
         PreparedStatement preparedStatement = null;
@@ -73,7 +100,8 @@ public class Database {
             }
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1);
+                    User user = new User(generatedKeys.getInt(1), username, email);
+                    return user;
                 }
                 else {
                     throw new SQLException("Creating user failed");
@@ -81,7 +109,7 @@ public class Database {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return 0;
+            return null;
         }
     }
 

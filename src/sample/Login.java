@@ -14,6 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class Login {
@@ -35,6 +37,15 @@ public class Login {
 
     @FXML
     private JFXPasswordField passwordInput;
+
+    @FXML
+    private Label loginError;
+
+    @FXML
+    private Label usernameError;
+
+    @FXML
+    private Label passwordError;
 
     @FXML
     void loginButtonClick(ActionEvent event) {
@@ -62,21 +73,66 @@ public class Login {
     }
 
     private void login(String username, String password) {
+        if (!validate(username, password)) {
+            return;
+        }
+        User user = null;
         String hash = "";
         String salt = "";
         Database database = new Database();
         ResultSet resultSet = database.getUser(username);
+
         try {
             hash = resultSet.getString("password");
             salt = resultSet.getString("salt");
-            User user = new User(resultSet.getInt("userid"), resultSet.getString("username"), resultSet.getString("email"));
+            user = new User(resultSet.getInt("userid"), resultSet.getString("username"), resultSet.getString("email"));
         } catch (SQLException e) {
             System.err.println("User not found: " + e.getMessage());
         }
+
         MyHash myHash = new MyHash();
         if (myHash.check(password, hash, salt)) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("taskList.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Parent root = loader.getRoot();
+            Scene scene = new Scene(root);
+            Stage pageStage = new Stage();
+            TaskList taskList = loader.getController();
+            pageStage.setScene(scene);
+            taskList.initialize();
+            taskList.setUser(user);
+            loginButton.getScene().getWindow().hide();
+            pageStage.show();
+        } else {
+            loginError.setVisible(true);
         }
+    }
 
+    private boolean validate(String username, String password) {
+
+        boolean valid = true;
+        loginError.setVisible(false);
+        usernameError.setVisible(false);
+        passwordError.setVisible(false);
+        usernameInput.setUnFocusColor(Paint.valueOf("#4d4d4d"));
+        passwordInput.setUnFocusColor(Paint.valueOf("#4d4d4d"));
+
+        if(username.isEmpty()) {
+            usernameError.setVisible(true);
+            usernameInput.setUnFocusColor(Paint.valueOf("#b91400"));
+            valid = false;
+        }
+        if(password.isEmpty()) {
+            passwordError.setVisible(true);
+            passwordInput.setUnFocusColor(Paint.valueOf("#b91400"));
+            valid = false;
+        }
+        return valid;
     }
 
     @FXML

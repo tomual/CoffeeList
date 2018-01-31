@@ -52,10 +52,7 @@ public class Signup {
 
     private void signup(String username, String email, String password) {
         Database database = new Database();
-        int userId = database.createUser(username, email, password);
-        if (userId != 0) {
-            User user = new User(userId, username, email);
-        }
+        User user = database.createUser(username, email, password);
     }
 
     private String validate(String username, String email, String password, String confirmPassword) {

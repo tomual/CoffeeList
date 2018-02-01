@@ -14,6 +14,8 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -21,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 
@@ -38,7 +41,7 @@ public class TaskList {
     private URL location;
 
     @FXML
-    private JFXListView<String> listView;
+    private JFXListView<Task> listView;
 
     @FXML
     private JFXButton addButton;
@@ -59,9 +62,13 @@ public class TaskList {
         }
     }
 
+    public void viewTask(Task task) {
+        System.out.println(task.getTaskid());
+    }
+
     @FXML
     void initialize() {
-        ObservableList<String> observableList = FXCollections.observableArrayList();;
+        ObservableList<Task> observableList = FXCollections.observableArrayList();;
         Database database = new Database();
         if (user != null) {
             observableList = database.getTasks(user.getUserId());
@@ -78,7 +85,10 @@ public class TaskList {
         System.out.println("Hello, " + user.getUsername() + "!");
     }
 
-    static class JFXCell extends JFXListCell<String> {
+    public void deleteButtonClick(ActionEvent actionEvent) {
+    }
+
+    class JFXCell extends JFXListCell<Task> {
         HBox hBox = new HBox();
         JFXCheckBox checkBox = new JFXCheckBox();
         Label labelLabel = new Label();
@@ -94,13 +104,21 @@ public class TaskList {
             checkBox.setCheckedColor(Paint.valueOf("#29434e"));
         }
 
-        public void updateItem(String label, boolean checked) {
-            super.updateItem(label, checked);
+        @Override
+        protected void updateItem(Task task, boolean empty) {
+            super.updateItem(task, empty);
             setText(null);
 
-            if(label != null && !checked) {
-                labelLabel.setText(label);
+            if (empty || task == null || task.getLabel() == null) {
+                setText(null);
+            } else {
+                labelLabel.setText(task.getLabel());
                 setGraphic(hBox);
+                setOnMouseClicked(click -> {
+                    if (click.getClickCount() == 2) {
+                        viewTask(task);
+                    }
+                });
             }
         }
     }

@@ -134,8 +134,8 @@ public class Database {
         return null;
     }
 
-    public ObservableList<String> getTasks(int userId) {
-        ObservableList<String> observableList = FXCollections.observableArrayList();;
+    public ObservableList<Task> getTasks(int userId) {
+        ObservableList<Task> observableList = FXCollections.observableArrayList();;
         System.out.println("getTasks");
         String query = "SELECT * FROM tasks WHERE userid = ?";
 
@@ -148,7 +148,8 @@ public class Database {
 
             while(resultSet.next()) {
                 System.out.println("Adding: " + resultSet.getString("label"));
-                observableList.add(resultSet.getString("label"));
+                Task task = new Task(resultSet.getInt("taskid"), resultSet.getInt("userid"), resultSet.getString("label"), resultSet.getString("description"), resultSet.getDate("created"));
+                observableList.add(task);
             }
             preparedStatement.close();
             return observableList;

@@ -8,12 +8,14 @@ public class Task {
     private String label;
     private String descripion;
     private Date created;
+    private boolean complete;
 
-    public Task(int taskid, int userid, String label, String description, Date created) {
+    public Task(int taskid, int userid, String label, String description, boolean complete, Date created) {
         this.taskid = taskid;
         this.userid = userid;
         this.label = label;
         this.descripion = description;
+        this.complete = complete;
         this.created = created;
     }
 
@@ -55,5 +57,13 @@ public class Task {
 
     public void setCreated(Date created) {
         this.created = created;
+    }
+
+    public boolean isComplete() {
+        return complete;
+    }
+
+    public void setComplete(boolean complete) {
+        this.complete = complete;
     }
 }

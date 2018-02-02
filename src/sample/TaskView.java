@@ -36,7 +36,7 @@ public class TaskView {
     private Text description;
 
     @FXML
-    private JFXCheckBox label;
+    private JFXCheckBox checkBox;
 
     @FXML
     void backButtonClick(ActionEvent event) {
@@ -64,12 +64,25 @@ public class TaskView {
         backButtonClick(event);
     }
 
+    public void checkboxClick(JFXCheckBox checkBox, Task task) {
+        Database database = new Database();
+        if(checkBox.isSelected()) {
+            database.setTaskComplete(task);
+        } else {
+            database.setTaskIncomplete(task);
+        }
+    }
+
     @FXML
     void initialize() {
 
         if (task != null) {
-            label.setText(task.getLabel());
+            System.out.println("$$$$$$$$$$$$$$$$$$$$");
+            System.out.println(task.getLabel());
+            checkBox.setText(task.getLabel());
             description.setText(task.getDescripion());
+            checkBox.setSelected(task.isComplete());
+            checkBox.setOnMouseClicked(event -> checkboxClick(checkBox, task));
         }
     }
 

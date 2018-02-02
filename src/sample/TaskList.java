@@ -94,7 +94,13 @@ public class TaskList {
         System.out.println("Hello, " + user.getUsername() + "!");
     }
 
-    public void deleteButtonClick(ActionEvent actionEvent) {
+    public void checkboxClick(JFXCheckBox checkBox, Task task) {
+        Database database = new Database();
+        if(checkBox.isSelected()) {
+            database.setTaskComplete(task);
+        } else {
+            database.setTaskIncomplete(task);
+        }
     }
 
     class JFXCell extends JFXListCell<Task> {
@@ -128,6 +134,8 @@ public class TaskList {
                         viewTask(task);
                     }
                 });
+                checkBox.setSelected(task.isComplete());
+                checkBox.setOnMouseClicked(event -> checkboxClick(checkBox, task));
             }
         }
     }

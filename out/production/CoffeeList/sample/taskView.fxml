@@ -48,7 +48,7 @@
          </font>
       </Text>
       <Separator layoutX="30.0" layoutY="151.0" prefHeight="7.0" prefWidth="290.0" />
-      <JFXCheckBox fx:id="label" checkedColor="#29434e" layoutX="30.0" layoutY="110.0" onAction="#checkTask" text="Task Title">
+      <JFXCheckBox fx:id="checkBox" checkedColor="#29434e" layoutX="30.0" layoutY="110.0" onAction="#checkTask" text="Task Title">
          <font>
             <Font size="18.0" />
          </font>

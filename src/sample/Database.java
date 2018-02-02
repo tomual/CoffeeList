@@ -73,7 +73,7 @@ public class Database {
             }
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    Task task = new Task(generatedKeys.getInt(1), user.getUserId(), label, description, new java.util.Date());
+                    Task task = new Task(generatedKeys.getInt(1), user.getUserId(), label, description, false, new java.util.Date());
                     return task;
                 }
                 else {
@@ -148,7 +148,12 @@ public class Database {
 
             while(resultSet.next()) {
                 System.out.println("Adding: " + resultSet.getString("label"));
-                Task task = new Task(resultSet.getInt("taskid"), resultSet.getInt("userid"), resultSet.getString("label"), resultSet.getString("description"), resultSet.getDate("created"));
+                int taskId = resultSet.getInt("taskid");
+                String label = resultSet.getString("label");
+                String description = resultSet.getString("description");
+                boolean complete = resultSet.getString("complete").equals("Y");
+                Date created = resultSet.getDate("created");
+                Task task = new Task(taskId, userId, label, description, complete, created);
                 observableList.add(task);
             }
             preparedStatement.close();
@@ -165,6 +170,33 @@ public class Database {
         try {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, task.getTaskid());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTaskComplete(Task task) {
+        System.out.println(task.getTaskid());
+        String query = "UPDATE tasks SET complete = ? WHERE taskid = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "Y");
+            preparedStatement.setInt(2, task.getTaskid());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setTaskIncomplete(Task task) {
+        String query = "UPDATE tasks SET complete = ? WHERE taskid = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, "N");
+            preparedStatement.setInt(2, task.getTaskid());
             preparedStatement.execute();
         } catch (SQLException e) {
             e.printStackTrace();

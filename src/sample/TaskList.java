@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -63,7 +64,18 @@ public class TaskList {
     }
 
     public void viewTask(Task task) {
-        System.out.println(task.getTaskid());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskView.fxml"));
+            AnchorPane form = loader.load();
+
+            TaskView taskView = loader.getController();
+            taskView.setTask(task);
+            taskView.setUser(user);
+            taskView.initialize();
+            anchorPane.getChildren().setAll(form);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -75,9 +87,6 @@ public class TaskList {
         }
         listView.setItems(observableList);
         listView.setCellFactory(param -> new JFXCell());
-        assert listView != null : "fx:id=\"listView\" was not injected: check your FXML file 'taskList.fxml'.";
-        assert addButton != null : "fx:id=\"addButton\" was not injected: check your FXML file 'taskList.fxml'.";
-
     }
 
     public void setUser(User user) {

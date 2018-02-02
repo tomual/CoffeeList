@@ -41,10 +41,6 @@ public class AddTask {
 
     @FXML
     void initialize() {
-        assert labelInput != null : "fx:id=\"labelInput\" was not injected: check your FXML file 'addTask.fxml'.";
-        assert descriptionInput != null : "fx:id=\"descriptionInput\" was not injected: check your FXML file 'addTask.fxml'.";
-        assert addButton != null : "fx:id=\"addButton\" was not injected: check your FXML file 'addTask.fxml'.";
-
     }
 
     public void addButtonClick(ActionEvent actionEvent) {
@@ -53,8 +49,6 @@ public class AddTask {
 
         if (validate()) {
             addTask(label, description);
-
-
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("taskList.fxml"));
             try {
@@ -67,8 +61,8 @@ public class AddTask {
             Stage pageStage = new Stage();
             TaskList taskList = loader.getController();
             pageStage.setScene(scene);
-            taskList.initialize();
             taskList.setUser(user);
+            taskList.initialize();
             addButton.getScene().getWindow().hide();
             pageStage.show();
         }

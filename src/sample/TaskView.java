@@ -2,10 +2,13 @@ package sample;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
@@ -37,7 +40,16 @@ public class TaskView {
 
     @FXML
     void backButtonClick(ActionEvent event) {
-
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("taskList.fxml"));
+            AnchorPane form = loader.load();
+            TaskList taskList = loader.getController();
+            taskList.setUser(user);
+            taskList.initialize();
+            anchorPane.getChildren().setAll(form);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -52,8 +64,11 @@ public class TaskView {
 
     @FXML
     void initialize() {
-        label.setText(task.getLabel());
-        description.setText(task.getDescripion());
+
+        if (task != null) {
+            label.setText(task.getLabel());
+            description.setText(task.getDescripion());
+        }
     }
 
     public void setUser(User user) {

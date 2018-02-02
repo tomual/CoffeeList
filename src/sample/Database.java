@@ -158,4 +158,16 @@ public class Database {
         }
         return null;
     }
+
+    public void deleteTask(Task task) {
+        String query = "DELETE FROM tasks WHERE taskid = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, task.getTaskid());
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

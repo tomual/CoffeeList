@@ -59,7 +59,9 @@ public class TaskView {
 
     @FXML
     void deleteButtonClick(ActionEvent event) {
-
+        Database database = new Database();
+        database.deleteTask(task);
+        backButtonClick(event);
     }
 
     @FXML

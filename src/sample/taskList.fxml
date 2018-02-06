@@ -3,14 +3,17 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="470.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TaskList">
+<AnchorPane fx:id="anchorPane" prefHeight="495.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TaskList">
    <children>
-      <AnchorPane prefHeight="86.0" prefWidth="345.0" style="-fx-background-color: #546e7a;">
+      <AnchorPane layoutY="25.0" prefHeight="86.0" prefWidth="345.0" style="-fx-background-color: #546e7a;">
          <children>
             <Text fill="WHITE" layoutX="135.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My List">
                <font>
@@ -19,8 +22,21 @@
             </Text>
          </children>
       </AnchorPane>
-      <JFXListView fx:id="listView" layoutY="86.0" prefHeight="384.0" prefWidth="345.0" style="-fx-accent: #E1E2E1; -fx-focus-color: #E1E2E1; -jfx-rippler-fill: #819ca9;" />
-      <JFXButton fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="396.0" onAction="#addButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="+" textFill="WHITE">
+      <MenuBar prefWidth="345.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Tasks">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#menuAddTaskClick" text="Add Task" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuMarkAllCompleteClick" text="Mark All As Complete" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuMarkAllIncompleteClick" text="Mark All As Incomplete" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuDeleteCompleteClick" text="Delete Complete Tasks" />
+                  <MenuItem mnemonicParsing="false" onAction="#menuDeleteAllClick" text="Delete All Tasks" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <JFXListView fx:id="listView" layoutY="111.0" prefHeight="384.0" prefWidth="345.0" style="-fx-accent: #E1E2E1; -fx-focus-color: #E1E2E1; -jfx-rippler-fill: #819ca9;" />
+      <JFXButton fx:id="addButton" alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="421.0" onAction="#addButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="+" textFill="WHITE">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>

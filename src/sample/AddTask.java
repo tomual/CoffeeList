@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
@@ -26,6 +27,9 @@ public class AddTask {
 
     @FXML
     private URL location;
+
+    @FXML
+    private AnchorPane anchorPane;
 
     @FXML
     private JFXTextField labelInput;
@@ -41,6 +45,26 @@ public class AddTask {
 
     @FXML
     void initialize() {
+    }
+
+    @FXML
+    void backButtonClick(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("taskList.fxml"));
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Parent root = loader.getRoot();
+        Scene scene = new Scene(root);
+        Stage pageStage = new Stage();
+        TaskList taskList = loader.getController();
+        pageStage.setScene(scene);
+        taskList.setUser(user);
+        taskList.initialize();
+        addButton.getScene().getWindow().hide();
+        pageStage.show();
     }
 
     public void addButtonClick(ActionEvent actionEvent) {

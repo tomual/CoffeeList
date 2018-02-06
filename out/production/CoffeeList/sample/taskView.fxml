@@ -3,15 +3,18 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXCheckBox?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="anchorPane" prefHeight="470.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TaskView">
+<AnchorPane fx:id="anchorPane" prefHeight="495.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TaskView">
    <children>
-      <AnchorPane prefHeight="86.0" prefWidth="345.0" style="-fx-background-color: #546e7a;">
+      <AnchorPane layoutY="25.0" prefHeight="86.0" prefWidth="345.0" style="-fx-background-color: #546e7a;">
          <children>
             <Text fill="WHITE" layoutX="149.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task">
                <font>
@@ -20,7 +23,18 @@
             </Text>
          </children>
       </AnchorPane>
-      <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="396.0" onAction="#deleteButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="×" textFill="WHITE">
+      <MenuBar prefWidth="345.0">
+         <menus>
+            <Menu mnemonicParsing="false" text="Tasks">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Mark as Complete" />
+                  <MenuItem mnemonicParsing="false" text="Delete Task" />
+                  <MenuItem mnemonicParsing="false" text="Back" />
+               </items>
+            </Menu>
+         </menus>
+      </MenuBar>
+      <JFXButton fx:id="deleteButton" alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="421.0" onAction="#deleteButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="×" textFill="WHITE">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -31,7 +45,7 @@
             <Insets />
          </opaqueInsets>
       </JFXButton>
-      <JFXButton fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="396.0" onAction="#backButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="🠈" textFill="WHITE">
+      <JFXButton fx:id="backButton" alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="421.0" onAction="#backButtonClick" style="-fx-min-height: 50px; -fx-min-width: 50px; -fx-background-color: #29434e; -fx-background-radius: 25px;" text="🠈" textFill="WHITE">
          <font>
             <Font name="System Bold" size="24.0" />
          </font>
@@ -42,13 +56,13 @@
             <Insets />
          </opaqueInsets>
       </JFXButton>
-      <Text fx:id="description" layoutX="30.0" layoutY="190.0" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Here's  a task description fit for the king himself" wrappingWidth="290.2255859375">
+      <Text fx:id="description" layoutX="30.0" layoutY="215.0" opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="Here's  a task description fit for the king himself" wrappingWidth="290.2255859375">
          <font>
             <Font size="16.0" />
          </font>
       </Text>
-      <Separator layoutX="30.0" layoutY="151.0" prefHeight="7.0" prefWidth="290.0" />
-      <JFXCheckBox fx:id="checkBox" checkedColor="#29434e" layoutX="30.0" layoutY="110.0" onAction="#checkTask" text="Task Title">
+      <Separator layoutX="30.0" layoutY="176.0" prefHeight="7.0" prefWidth="290.0" />
+      <JFXCheckBox fx:id="checkBox" checkedColor="#29434e" layoutX="30.0" layoutY="135.0" onAction="#checkTask" text="Task Title">
          <font>
             <Font size="18.0" />
          </font>
